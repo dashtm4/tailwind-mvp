@@ -1,6 +1,6 @@
 import { addDays, format, differenceInDays } from "date-fns";
 
-const getDateRanges = (startDate: Date, endDate: Date) => {
+const getDateRange = (startDate: Date, endDate: Date) => {
   const days = differenceInDays(endDate, startDate);
 
   return [...Array(days + 1).keys()].map((i) =>
@@ -8,4 +8,4 @@ const getDateRanges = (startDate: Date, endDate: Date) => {
   );
 };
 
-export default getDateRanges;
+export default getDateRange;
