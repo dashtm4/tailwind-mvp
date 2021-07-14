@@ -11,6 +11,7 @@ import { CHART_DATASET } from "../../constants";
 import { IProduct, IProducts } from "../../types";
 
 const PRODUCTS_LIST = ["Both", "Product 1", "Product 2"];
+const CHART_OPTIONS = { plugins: { legend: { display: false } } };
 
 const Main = () => {
   const [dateRange, setDateRange] = useState({
@@ -104,7 +105,7 @@ const Main = () => {
           />
         </div>
         <div className="mb-5">
-          <Line type="line" data={chartData} />
+          <Line type="line" data={chartData} options={CHART_OPTIONS} />
         </div>
       </div>
 
