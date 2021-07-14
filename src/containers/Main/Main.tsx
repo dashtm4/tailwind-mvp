@@ -8,7 +8,7 @@ import BaseMenu from "../../components/BaseMenu";
 import ProductTable from "../../components/ProductTable";
 import { getDateRange, getProductRange } from "../../utils";
 import { CHART_DATASET } from "../../constants";
-import { IProducts } from "../../types";
+import { IProduct, IProducts } from "../../types";
 
 const PRODUCTS_LIST = ["Both", "Product 1", "Product 2"];
 
@@ -49,21 +49,31 @@ const Main = () => {
     minDataSet.data = [];
     maxDataSet.data = [];
 
-    products.map((product) => {
-      labels.map((label, labelIndex) => {
-        const { min, max } = getProductRange(product.values[labelIndex], delta);
-        minDataSet.data.push(min);
-        maxDataSet.data.push(max);
-
-        currentDay === label && (delta = 5);
+    labels.map((label, labelIndex) => {
+      if (selectedProduct == null) {
         return false;
-      });
+      }
+
+      const value =
+        selectedProduct === 0
+          ? products.reduce(
+              (acc: number, curr: IProduct) => acc + curr.values[labelIndex],
+              0
+            )
+          : products[selectedProduct - 1].values[labelIndex];
+
+      const { min, max } = getProductRange(value, delta);
+      minDataSet.data.push(min);
+      maxDataSet.data.push(max);
+
+      currentDay === label && (delta = 5);
+      return true;
     });
 
     const datasets = [minDataSet, maxDataSet];
 
     setChartData({ labels, datasets });
-  }, [products]);
+  }, [products, selectedProduct]);
 
   const handleSelectDateRange = (ranges: any) => {
     setDateRange(ranges.range1);
