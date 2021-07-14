@@ -5,8 +5,10 @@ import { format } from "date-fns";
 import random from "random";
 
 import BaseMenu from "../../components/BaseMenu";
+import ProductTable from "../../components/ProductTable";
 import { getDateRange, getProductRange } from "../../utils";
 import { CHART_DATASET } from "../../constants";
+import { IProducts } from "../../types";
 
 const PRODUCTS_LIST = ["Both", "Product 1", "Product 2"];
 
@@ -22,9 +24,9 @@ const Main = () => {
       { label: "max", ...CHART_DATASET },
     ],
   });
-  const [products, setProducts] = useState([
-    { name: "Product 1", values: [] as number[] },
-    { name: "Product 2", values: [] as number[] },
+  const [products, setProducts] = useState<IProducts>([
+    { name: "Product 1", values: [] },
+    { name: "Product 2", values: [] },
   ]);
   const [selectedProduct, setProduct] = useState<number | null>(null);
 
@@ -85,53 +87,37 @@ const Main = () => {
   return (
     <section className="flex flex-wrap p-5">
       <div className="px-10">
-        <div className="p-6 pt-1 bg-white rounded-lg shadow-xl ">
+        <div className="p-6 mb-5 bg-white rounded-lg shadow-xl ">
           <DateRangePicker
             ranges={[dateRange]}
             onChange={handleSelectDateRange}
           />
         </div>
-
-        <Line type="line" data={chartData} />
+        <div className="mb-5">
+          <Line type="line" data={chartData} />
+        </div>
       </div>
 
       <div className="px-10">
-        <BaseMenu
-          options={PRODUCTS_LIST}
-          selectedId={selectedProduct}
-          placeholder="Product Selector"
-          onSelect={handleSelectMenu}
-        />
-        <table className="bg-white shadow-lg">
-          <tr>
-            <th className="px-4 py-2 text-left text-white bg-blue-500 border">
-              Date
-            </th>
-            <th className="px-4 py-2 text-left text-white bg-blue-500 border">
-              Product
-            </th>
-            <th className="px-4 py-2 text-left text-white bg-blue-500 border">
-              Value
-            </th>
-          </tr>
-          {products.map((product, productIndex) =>
-            chartData.labels.map((label, labelIndex) => (
-              <tr key={`${productIndex}-${labelIndex}`}>
-                <td className="px-4 py-2 border">{label}</td>
-                <td className="px-4 py-2 border">{product.name}</td>
-                <td className="px-4 py-2 border">
-                  {product.values[labelIndex] || 0}
-                </td>
-              </tr>
-            ))
-          )}
-        </table>
-        <input
-          className="w-full px-4 text-sm text-white transition-colors duration-150 bg-blue-500 rounded-lg cursor-pointer h-9 focus:shadow-outline hover:bg-blue-600"
-          type="button"
-          value="Randomize"
-          onClick={() => randomize(-1)}
-        />
+        <div className="mb-5">
+          <BaseMenu
+            options={PRODUCTS_LIST}
+            selectedId={selectedProduct}
+            placeholder="Product Selector"
+            onSelect={handleSelectMenu}
+          />
+        </div>
+        <div className="mb-5">
+          <ProductTable products={products} dates={chartData.labels} />
+        </div>
+        <div className="mb-5">
+          <input
+            className="w-full px-4 text-sm text-white transition-colors duration-150 bg-blue-500 rounded-lg cursor-pointer h-9 focus:shadow-outline hover:bg-blue-600"
+            type="button"
+            value="Randomize"
+            onClick={() => randomize(-1)}
+          />
+        </div>
       </div>
     </section>
   );
