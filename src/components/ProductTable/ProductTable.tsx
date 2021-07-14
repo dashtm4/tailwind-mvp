@@ -30,6 +30,13 @@ const ProductTable = ({ products, dates }: IProps) => {
           </tr>
         ))
       )}
+      {dates.length === 0 && (
+        <tr>
+          <td colSpan={3} className="px-4 py-2 text-center border">
+            No Data
+          </td>
+        </tr>
+      )}
     </table>
   );
 };

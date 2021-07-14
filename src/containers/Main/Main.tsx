@@ -51,6 +51,8 @@ const Main = () => {
     maxDataSet.data = [];
 
     labels.map((label, labelIndex) => {
+      currentDay < label && (delta = 5);
+
       if (selectedProduct == null) {
         return false;
       }
@@ -67,7 +69,6 @@ const Main = () => {
       minDataSet.data.push(min);
       maxDataSet.data.push(max);
 
-      currentDay === label && (delta = 5);
       return true;
     });
 
